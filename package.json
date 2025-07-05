@@ -1,0 +1,177 @@
+{
+  "name": "@pluto-whale-studio/repeating-wheel-picker",
+  "version": "1.8.0",
+  "description": "A React Native wheel picker that allows endless scrolling through repeating content",
+  "main": "./lib/module/index.js",
+  "types": "./lib/typescript/src/index.d.ts",
+  "engines": {
+    "npm": ">=10.2.4",
+    "node": ">=20.0.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./lib/typescript/src/index.d.ts",
+      "default": "./lib/module/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "example/package.json",
+    "example/**/*.ts",
+    "example/**/*.tsx",
+    "android",
+    "ios",
+    "cpp",
+    "*.podspec",
+    "react-native.config.js",
+    "!ios/build",
+    "!android/build",
+    "!android/gradle",
+    "!android/gradlew",
+    "!android/gradlew.bat",
+    "!android/local.properties",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__",
+    "!**/.*",
+    "!**/node_modules"
+  ],
+  "scripts": {
+    "example": "cd example & npm start",
+    "test": "jest",
+    "typecheck": "tsc",
+    "lint": "eslint \"**/*.{js,ts,tsx}\" --fix",
+    "clean": "del-cli lib",
+    "prepare": "husky",
+    "build": "bob build",
+    "docs": "typedoc",
+    "tag": "npx release-it --config .release/on-tag.json",
+    "release": "npx release-it --config .release/on-release.json --no-git --no-increment"
+  },
+  "keywords": [
+    "react-native",
+    "ios",
+    "android",
+    "expo",
+    "wheel",
+    "picker",
+    "wheel-picker"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pluto-whale-studio/repeating-wheel-picker.git"
+  },
+  "author": "Pluto Whale Studio (https://github.com/pluto-whale-studio)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pluto-whale-studio/repeating-wheel-picker/issues"
+  },
+  "homepage": "https://pluto-whale-studio.github.io/repeating-wheel-picker",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "expo-linear-gradient": "^15.0.8"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "20.3.1",
+    "@commitlint/config-conventional": "20.3.1",
+    "@eslint/js": "9.39.2",
+    "@react-native/babel-preset": "0.83.1",
+    "@react-native/eslint-config": "0.83.1",
+    "@release-it/conventional-changelog": "^10.0.4",
+    "@stylistic/eslint-plugin": "5.7.0",
+    "@types/jest": "30.0.0",
+    "@types/react": "19.2.8",
+    "commitlint": "20.3.1",
+    "del-cli": "7.0.0",
+    "dotenv-cli": "11.0.0",
+    "eslint": "9.39.2",
+    "eslint-plugin-indent-empty-lines": "1.0.2",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "7.0.1",
+    "eslint-plugin-react-native": "5.0.0",
+    "eslint-plugin-unused-imports": "4.3.0",
+    "git-cliff": "2.11.0",
+    "globals": "17.0.0",
+    "husky": "9.1.7",
+    "jest": "30.2.0",
+    "lint-staged": "16.2.7",
+    "npm-check-updates": "19.3.1",
+    "react-native-builder-bob": "0.40.17",
+    "release-it": "19.2.3",
+    "typedoc-github-theme": "0.3.1",
+    "typedoc-plugin-coverage": "4.0.2",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.52.0"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-native": ">=0.79.5 <1.0.0"
+  },
+  "overrides": {
+    "@react-native/eslint-config": {
+      "eslint": "$eslint"
+    },
+    "conventional-changelog-conventionalcommits": "8.0.0",
+    "undici": "6.23.0"
+  },
+  "workspaces": [
+    "example"
+  ],
+  "packageManager": "yarn@3.6.1",
+  "jest": {
+    "preset": "react-native",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/example/node_modules",
+      "<rootDir>/lib/"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --fix"
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
+    ]
+  },
+  "create-react-native-library": {
+    "languages": "js",
+    "type": "library",
+    "version": "0.51.1"
+  },
+  "typedocOptions": {
+    "entryPoints": [
+      "src/index.tsx"
+    ],
+    "projectDocuments": [
+      "*.md"
+    ],
+    "sort": [
+      "source-order"
+    ],
+    "plugin": [
+      "typedoc-plugin-coverage",
+      "typedoc-github-theme"
+    ]
+  }
+}

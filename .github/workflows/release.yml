@@ -1,0 +1,52 @@
+name: Release on GitHub and npm
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual release'
+        required: false
+
+jobs:            
+  execute-release:
+    name: Execute release
+    if: github.repository == 'pluto-whale-studio/repeating-wheel-picker'
+    runs-on: ubuntu-latest
+
+    steps:      
+      - name: Checkout reference
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+          persist-credentials: false
+          
+      - name: Configure git
+        run: |
+          git config --global user.name "Pluto Whale Studio CI"
+          git config --global user.email "253284106+pluto-whale-studio-ci@users.noreply.github.com"
+
+      - name: Configure npm
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org/
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Add tokenized repository as remote
+        env:
+          GITHUB_TOKEN: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
+        run: |
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/pluto-whale-studio/repeating-wheel-picker.git
+
+      - name: Run release-it to release on npm and GitHub
+        run: npm run release -- --ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
+    
