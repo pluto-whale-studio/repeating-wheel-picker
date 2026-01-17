@@ -1,4 +1,4 @@
-import { type RefObject, useEffect, useMemo, useRef, useState } from "react";
+import { type RefObject, useMemo, useRef, useState } from "react";
 import {
   type AnimatableNumericValue,
   type ColorValue,
@@ -55,15 +55,6 @@ export function RepeatingWheelPicker<T>(
   );
   const listRef = useRef<VirtualizedList<T>>(null);
 
-  // call "setSelected" when the current top item or the data changed
-  useEffect(() => {
-    const selectedElement = props.data[current % props.data.length]; // centered element
-
-    if (selectedElement !== undefined) {
-      props.setSelected(selectedElement);
-    }
-  }, [current, props, props.data]);
-
   return (
     <View
       onLayout={props.containerOnLayout}
@@ -95,10 +86,11 @@ export function RepeatingWheelPicker<T>(
         decelerationRate="fast"
         snapToOffsets={offsets}
         onMomentumScrollEnd={(event) =>
-          onMomentumScrollEnd(
+          onScrollEnd(
             event.nativeEvent.contentOffset.y,
             setCurrent,
-            props.data.length,
+            props.setSelected,
+            props.data,
             props.itemHeight,
             dataMultiplier,
             indexDiffTopToCentered,
@@ -204,10 +196,11 @@ function itemOffset(
   return (index + (itemDisplayCount % 2 === 0 ? 0.5 : 0)) * itemHeight;
 }
 
-function onMomentumScrollEnd<T>(
+function onScrollEnd<T>(
   offset: number,
   setCurrent: (n: number) => void,
-  dataLength: number,
+  setSelected: (t: T) => void,
+  data: T[],
   itemHeight: number,
   dataMultiplier: number,
   indexDiffTopToCentered: number,
@@ -223,15 +216,22 @@ function onMomentumScrollEnd<T>(
   // section 0 = [0, data.length)
   // section 1 = [data.length, data.length * 2)
   // ...
-  const currentSection = Math.floor(innerOffset / (dataLength * itemHeight));
+  const currentSection = Math.floor(innerOffset / (data.length * itemHeight));
   // target section is always the middle one, so user can scroll seemingly infinitely
   const targetSection = Math.floor(dataMultiplier / 2);
 
   // get corresponding index of current top index in target section
   const targetTopIndex =
-    currentTopIndex + (targetSection - currentSection) * dataLength;
+    currentTopIndex + (targetSection - currentSection) * data.length;
   // set current index to centered one, if `targetTopIndex`was at the top
-  setCurrent(targetTopIndex + indexDiffTopToCentered);
+  const currentCentered = targetTopIndex + indexDiffTopToCentered;
+  setCurrent(currentCentered);
+
+  // set selected element as currently centered one
+  const selectedElement = data[currentCentered % data.length];
+  if (selectedElement !== undefined) {
+    setSelected(selectedElement);
+  }
 
   if (currentSection === targetSection) {
     // if target section is current section, stay in this section

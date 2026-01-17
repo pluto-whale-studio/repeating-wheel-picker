@@ -38,7 +38,7 @@
     "!**/node_modules"
   ],
   "scripts": {
-    "example": "cd example & npm start",
+    "example": "npm run build && cd example & npm start",
     "test": "jest",
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\" --fix",

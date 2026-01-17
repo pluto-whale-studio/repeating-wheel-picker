@@ -6,15 +6,17 @@ import {
 } from "@pluto-whale-studio/repeating-wheel-picker";
 import styles, { Colors } from "../constants/styles";
 
+const INITIAL_INDEX = 0;
+
 export default function BooleanPicker() {
-  const [, setSelected] = useState<boolean>();
   const data: boolean[] = useMemo(() => [true, false], []);
+  const [, setSelected] = useState(data[INITIAL_INDEX]);
 
   const exampleProps = useMemo(
     (): RepeatingWheelPickerProps<boolean> => ({
       // mandatory
       setSelected: setSelected,
-      initialIndex: 0,
+      initialIndex: INITIAL_INDEX,
       data: data,
 
       // optional

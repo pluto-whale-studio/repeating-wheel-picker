@@ -7,16 +7,18 @@ import {
 import styles, { Colors } from "../constants/styles";
 import useComponentHeight from "../hooks/useComponentHeight";
 
+const INITIAL_INDEX = 30;
+
 export default function NumberPicker() {
-  const [selected, setSelected] = useState<number>();
-  const data: number[] = Array.from({ length: 123 }, (_, i) => i);
+  const data: number[] = useMemo(() => Array.from({ length: 123 }, (_, i) => i), []);
+  const [selected, setSelected] = useState(data[INITIAL_INDEX]);
   const [height, onLayout] = useComponentHeight();
 
   const exampleProps = useMemo(
     (): RepeatingWheelPickerProps<number> => ({
       // mandatory
       setSelected: setSelected,
-      initialIndex: 30,
+      initialIndex: INITIAL_INDEX,
       data: data,
 
       // optional

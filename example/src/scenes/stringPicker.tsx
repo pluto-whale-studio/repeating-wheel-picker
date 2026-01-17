@@ -6,18 +6,20 @@ import {
 } from "@pluto-whale-studio/repeating-wheel-picker";
 import styles, { Colors } from "../constants/styles";
 
+const INITIAL_INDEX = 7;
+
 export default function StringPicker() {
-  const [favoriteWord, setFavoriteWord] = useState<string>();
   const data: string[] = useMemo(
     () => ["art", "bus", "cache", "dart", "end", "fun", "grass", "hug"],
     []
   );
+  const [selected, setSelected] = useState(data[INITIAL_INDEX]);
 
   const exampleProps = useMemo(
     (): RepeatingWheelPickerProps<string> => ({
       // mandatory
-      setSelected: setFavoriteWord,
-      initialIndex: 7,
+      setSelected: setSelected,
+      initialIndex: INITIAL_INDEX,
       data: data,
 
       // optional
@@ -37,7 +39,7 @@ export default function StringPicker() {
         <Text style={titleStyle}>String picker:</Text>
         <RepeatingWheelPicker<string> {...exampleProps} />
       </View>
-      <Text style={selectedStyle}>Selected: {favoriteWord}</Text>
+      <Text style={selectedStyle}>Selected: {selected}</Text>
     </View>
   );
 }

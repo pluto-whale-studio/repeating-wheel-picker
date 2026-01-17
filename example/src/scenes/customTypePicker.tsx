@@ -12,9 +12,10 @@ import {
 } from "@pluto-whale-studio/repeating-wheel-picker";
 import styles, { Colors } from "../constants/styles";
 
+const INITIAL_INDEX = 0;
+
 export default function CustomTypePicker() {
   const [pickerEnabled, setPickerEnabled] = useState(false);
-  const [, setSelected] = useState<FoodItem>();
   const data: FoodItem[] = useMemo(
     () => [
       {
@@ -40,12 +41,13 @@ export default function CustomTypePicker() {
     ],
     []
   );
+  const [, setSelected] = useState(data[INITIAL_INDEX]);
 
   const exampleProps = useMemo(
     (): RepeatingWheelPickerProps<FoodItem> => ({
       // mandatory
       setSelected: setSelected,
-      initialIndex: 0,
+      initialIndex: INITIAL_INDEX,
       data: data,
 
       // optional
